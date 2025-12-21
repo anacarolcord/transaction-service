@@ -1,4 +1,8 @@
 package com.anadev.transaction_service.client.dto.enums;
 
-public enum TypeCategory {
+public enum TypeCurrency {
+    BRL,
+    EUR,
+    USD,
+
 }
