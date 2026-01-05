@@ -13,12 +13,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Document(collection = "TRANSACAO")
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Builder
 public class Transaction {
@@ -32,7 +34,7 @@ public class Transaction {
     @Field(name = "tipoTransacao")
     private TypeTransaction type;
     @Field(name = "valor")
-    private Double amount;
+    private BigDecimal amount;
     @Field(name = "categoria")
     private TypeCategory category;
     @Field(name = "criadoEm")
@@ -41,8 +43,5 @@ public class Transaction {
     private String description;
 
 
-    public Transaction() {
-        this.occurredAt = LocalDateTime.now();
-    }
 
 }

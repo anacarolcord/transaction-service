@@ -5,6 +5,7 @@ import com.anadev.transaction_service.database.collection.enums.TypeCategory;
 import com.anadev.transaction_service.database.collection.enums.TypeTransaction;
 import org.bson.types.ObjectId;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransactionResponse (
@@ -12,7 +13,7 @@ public record TransactionResponse (
         Long accountId,
         Long userId,
         TypeTransaction type,
-        Double amount,
+        BigDecimal amount,
         TypeCategory category,
         LocalDateTime occurredAt,
         String description

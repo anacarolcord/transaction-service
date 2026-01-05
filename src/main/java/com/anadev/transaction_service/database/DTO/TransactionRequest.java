@@ -5,12 +5,14 @@ import com.anadev.transaction_service.database.collection.enums.TypeCategory;
 import com.anadev.transaction_service.database.collection.enums.TypeTransaction;
 import lombok.Builder;
 
+import java.math.BigDecimal;
+
 @Builder
 public record TransactionRequest(
         Long accountId,
         Long userId,
         TypeTransaction type,
-        Double amount,
+        BigDecimal amount,
         TypeCategory category,
         String description)
 {
