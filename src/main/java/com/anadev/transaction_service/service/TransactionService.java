@@ -1,7 +1,12 @@
 package com.anadev.transaction_service.service;
 
 import com.anadev.transaction_service.client.AccountServiceClient;
-import com.anadev.transaction_service.client.dto.UserDTO;
+
+import static com.anadev.transaction_service.mapper.TotalInputsMapper.toInputsResponse;
+import static com.anadev.transaction_service.mapper.TotalOutputsMapper.toOutputResponse;
+
+import com.anadev.transaction_service.database.DTO.TotalInputsResponse;
+import com.anadev.transaction_service.database.DTO.TotalOutputsResponse;
 import com.anadev.transaction_service.database.DTO.TransactionRequest;
 import com.anadev.transaction_service.database.DTO.TransactionResponse;
 import com.anadev.transaction_service.database.collection.Transaction;
@@ -43,28 +48,30 @@ public class TransactionService {
         return updated;
     }
 
-    public BigDecimal getTotalOutputs(Long userId, LocalDateTime startDate, LocalDateTime endDate){
+    public TotalOutputsResponse getTotalOutputs(Long userId, LocalDateTime startDate, LocalDateTime endDate){
 
        List<TransactionResponse> filtered = this.getAllByUserAndDate(userId,startDate,endDate);
 
-       return filtered.stream()
+       BigDecimal amount = filtered.stream()
                 .filter(f-> f.type().equals(TypeTransaction.SAIDA))
                 .map(TransactionResponse::amount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+       return toOutputResponse(amount);
     }
 
-    public BigDecimal getTotalInputs(Long userId, LocalDateTime startDate, LocalDateTime endDate){
+    public TotalInputsResponse getTotalInputs(Long userId, LocalDateTime startDate, LocalDateTime endDate){
 
         List<TransactionResponse> filtered = this.getAllByUserAndDate(userId,startDate,endDate);
 
-        return filtered.stream()
+        BigDecimal amount = filtered.stream()
                 .filter(f-> f.type().equals(TypeTransaction.ENTRADA))
                 .map(TransactionResponse::amount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
+        return toInputsResponse(amount);
+
     }
-
-
 
     public List<TransactionResponse> getAllTransactions(){
 
