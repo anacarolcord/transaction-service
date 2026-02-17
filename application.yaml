@@ -1,0 +1,31 @@
+spring:
+
+  application:
+    name: transaction_service
+  # Configuração do MongoDB
+  data:
+    mongodb:
+      uri: mongodb+srv://ana_db_user:lgCcW5U6sT6finU6@transaction-cluster.vkmzqcq.mongodb.net/transactions
+
+
+  # Configuração do RabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: myuser
+    password: secret
+
+  # Configuração do Kafka
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# Zookeeper geralmente é gerenciado internamente pelo Kafka ou via propriedades específicas
+# se você estiver usando um cliente direto, mas para Spring Kafka, o bootstrap-server basta.

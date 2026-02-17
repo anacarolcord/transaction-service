@@ -103,7 +103,7 @@ public class TransactionService {
     }
 
     public List<TransactionResponse> getTransactionsByUserAndType(Long userId, TypeTransaction typeTransaction){
-        return transactionRepository.findAllByUserIdAndTypeTransaction(userId,typeTransaction)
+        return transactionRepository.findAllByUserIdAndType(userId,typeTransaction)
                 .stream()
                 .map(TransactionResponse::fromTransaction)
                 .collect(Collectors.toList());

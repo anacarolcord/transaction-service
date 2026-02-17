@@ -15,7 +15,7 @@ public interface TransactionRepository extends MongoRepository<Transaction, Obje
 
     List<Transaction> findAllByUserId(Long userId);
     List <Transaction> findAllByUserIdAndCategory(Long userId, TypeCategory category);
-    List<Transaction> findAllByUserIdAndTypeTransaction(Long userId, TypeTransaction typeTransaction);
+    List<Transaction> findAllByUserIdAndType(Long userId, TypeTransaction type);
     List<Transaction> findAllByOccurredAtAndUserId(LocalDateTime occurredAt, Long userId);
     List<Transaction> findAllByUserIdAndOccurredAtBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
