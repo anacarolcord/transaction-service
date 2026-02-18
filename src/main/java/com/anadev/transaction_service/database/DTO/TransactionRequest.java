@@ -12,7 +12,7 @@ public record TransactionRequest(
         Long accountId,
         Long userId,
         TypeTransaction type,
-        BigDecimal amount,
+        BigDecimal value,
         TypeCategory category,
         String description)
 {
@@ -21,7 +21,7 @@ public record TransactionRequest(
                 .accountId(this.accountId)
                 .userId(this.userId)
                 .type(this.type)
-                .amount(this.amount)
+                .value(this.value)
                 .category(this.category)
                 .description(this.description)
                 .build();

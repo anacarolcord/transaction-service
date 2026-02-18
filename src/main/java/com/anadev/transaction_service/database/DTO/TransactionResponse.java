@@ -13,7 +13,7 @@ public record TransactionResponse (
         Long accountId,
         Long userId,
         TypeTransaction type,
-        BigDecimal amount,
+        BigDecimal value,
         TypeCategory category,
         LocalDateTime occurredAt,
         String description
@@ -24,7 +24,7 @@ public record TransactionResponse (
                 transaction.getAccountId(),
                 transaction.getUserId(),
                 transaction.getType(),
-                transaction.getAmount(),
+                transaction.getValue(),
                 transaction.getCategory(),
                 transaction.getOccurredAt(),
                 transaction.getDescription()

@@ -5,6 +5,7 @@ import com.anadev.transaction_service.client.AccountServiceClient;
 import static com.anadev.transaction_service.mapper.TotalInputsMapper.toInputsResponse;
 import static com.anadev.transaction_service.mapper.TotalOutputsMapper.toOutputResponse;
 
+import com.anadev.transaction_service.client.dto.TransactionRequestDTO;
 import com.anadev.transaction_service.database.DTO.TotalInputsResponse;
 import com.anadev.transaction_service.database.DTO.TotalOutputsResponse;
 import com.anadev.transaction_service.database.DTO.TransactionRequest;
@@ -35,41 +36,52 @@ public class TransactionService {
         transaction.setAccountId(data.accountId());
         transaction.setUserId(data.userId());
         transaction.setType(data.type());
-        transaction.setAmount(data.amount());
+        transaction.setValue(data.value());
         transaction.setCategory(data.category());
         transaction.setDescription(data.description());
         transaction.setOccurredAt(LocalDateTime.now());
 
+
+        TransactionRequestDTO transactionRequest = TransactionRequestDTO.builder().typeTransaction(transaction.getType())
+                .value(transaction.getValue()).
+                accountId(transaction.getAccountId()).build();
+
+        try{
+            accountService.updateAccount(transactionRequest);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
         transactionRepository.save(transaction);
 
-        TransactionResponse updated = TransactionResponse.fromTransaction(transaction);
-        accountService.updateAccount(updated);
 
-        return updated;
+        return TransactionResponse.fromTransaction(transaction);
     }
 
     public TotalOutputsResponse getTotalOutputs(Long userId, LocalDateTime startDate, LocalDateTime endDate){
 
        List<TransactionResponse> filtered = this.getAllByUserAndDate(userId,startDate,endDate);
 
-       BigDecimal amount = filtered.stream()
+       BigDecimal value = filtered.stream()
                 .filter(f-> f.type().equals(TypeTransaction.SAIDA))
-                .map(TransactionResponse::amount)
+                .map(TransactionResponse::value)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-       return toOutputResponse(amount);
+       return toOutputResponse(value);
     }
 
     public TotalInputsResponse getTotalInputs(Long userId, LocalDateTime startDate, LocalDateTime endDate){
 
         List<TransactionResponse> filtered = this.getAllByUserAndDate(userId,startDate,endDate);
 
-        BigDecimal amount = filtered.stream()
+        BigDecimal value = filtered.stream()
                 .filter(f-> f.type().equals(TypeTransaction.ENTRADA))
-                .map(TransactionResponse::amount)
+                .map(TransactionResponse::value)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return toInputsResponse(amount);
+        return toInputsResponse(value);
 
     }
 

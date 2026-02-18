@@ -34,7 +34,7 @@ public class Transaction {
     @Field(name = "tipoTransacao")
     private TypeTransaction type;
     @Field(name = "valor")
-    private BigDecimal amount;
+    private BigDecimal value;
     @Field(name = "categoria")
     private TypeCategory category;
     @Field(name = "criadoEm")
