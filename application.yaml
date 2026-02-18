@@ -5,7 +5,7 @@ spring:
   # Configuração do MongoDB
   data:
     mongodb:
-      uri: mongodb+srv://ana_db_user:lgCcW5U6sT6finU6@transaction-cluster.vkmzqcq.mongodb.net/transactions
+      uri: mongodb://localhost:27017/transaction-db
 
 
   # Configuração do RabbitMQ
