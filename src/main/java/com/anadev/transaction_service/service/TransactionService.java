@@ -39,6 +39,7 @@ public class TransactionService {
         Transaction transaction = new Transaction();
         transaction.setAccountId(data.accountId());
         transaction.setUserId(data.userId());
+        transaction.setUserEmail(data.userEmail());
         transaction.setType(data.type());
         transaction.setValue(data.value());
         transaction.setCategory(data.category());
@@ -46,9 +47,14 @@ public class TransactionService {
         transaction.setOccurredAt(LocalDateTime.now());
 
 
-        TransactionRequestDTO transactionRequest = TransactionRequestDTO.builder().typeTransaction(transaction.getType())
+        TransactionRequest transactionRequest = TransactionRequest.builder().type(transaction.getType())
                 .value(transaction.getValue()).
-                accountId(transaction.getAccountId()).build();
+                accountId(transaction.getAccountId())
+                .userEmail(transaction.getUserEmail())
+                .userId(transaction.getUserId())
+                .category(transaction.getCategory())
+                .description(transaction.getDescription())
+                .build();
 
 
         accountService.updateAccount(transactionRequest);

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 public record TransactionRequest(
         Long accountId,
         Long userId,
+        String userEmail,
         TypeTransaction type,
         BigDecimal value,
         TypeCategory category,
@@ -20,6 +21,7 @@ public record TransactionRequest(
         return Transaction.builder()
                 .accountId(this.accountId)
                 .userId(this.userId)
+                .userEmail(this.userEmail)
                 .type(this.type)
                 .value(this.value)
                 .category(this.category)

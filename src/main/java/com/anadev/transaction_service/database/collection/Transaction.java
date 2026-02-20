@@ -31,6 +31,8 @@ public class Transaction {
     private Long accountId;
     @Field(name = "userId")
     private Long userId;
+    @Field(name = "emailUsuario")
+    private String userEmail;
     @Field(name = "tipoTransacao")
     private TypeTransaction type;
     @Field(name = "valor")

@@ -1,9 +1,11 @@
-spring:
+server:
+  port: 8083
+  error:
+    include-stacktrace: never
+    include-message: always
 
-  server:
-    error:
-      include-stacktrace: never
-      include-message: always
+
+spring:
 
   cloud:
     stream:
