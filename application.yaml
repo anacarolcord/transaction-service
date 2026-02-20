@@ -1,5 +1,10 @@
 spring:
 
+  server:
+    error:
+      include-stracktrace: never
+      include-message: always
+
   cloud:
     stream:
       bindings:
@@ -7,6 +12,7 @@ spring:
           destination: exchange.transaction.events
         warning-limit-out-0:
           destination: exchange.limit.alerts
+          binder: rabbit
 
   application:
     name: transaction_service
@@ -20,8 +26,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
-    username: myuser
-    password: secret
+    username: guest
+    password: guest
 
   # Configuração do Kafka
   kafka:

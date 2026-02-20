@@ -2,6 +2,7 @@ package com.anadev.transaction_service.client;
 
 import com.anadev.transaction_service.client.dto.AccountUpdateDTO;
 import com.anadev.transaction_service.client.dto.TransactionRequestDTO;
+import com.anadev.transaction_service.exception.AccountLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class AccountServiceClient {
                 .body(body)
                 .retrieve()
                 .onStatus(status -> status.value() == 422, (request, response) -> {
-                    throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusText());
+                    throw new AccountLimitExceededException("Transação negada: Limite mensal excedido.");
                 })
                 .onStatus(HttpStatusCode::isError, (request, response) -> {
                     throw new RuntimeException("Erro tecnico: "+ response.getStatusCode() +response.getStatusText() );

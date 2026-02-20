@@ -31,7 +31,6 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountServiceClient accountService;
-    private final WarningLimitProducer warningLimitProducer;
 
     public TransactionResponse createTransaction(TransactionRequest data){
 
@@ -49,14 +48,8 @@ public class TransactionService {
                 .value(transaction.getValue()).
                 accountId(transaction.getAccountId()).build();
 
-        try{
-            accountService.updateAccount(transactionRequest);
-        } catch (HttpClientErrorException.UnprocessableEntity e) {
-            warningLimitProducer.publish();
-            throw e;
-        }catch (Exception e){
-            throw new RuntimeException("Erro ao integrar com account-service", e.getCause());
-        }
+
+        accountService.updateAccount(transactionRequest);
 
 
 
