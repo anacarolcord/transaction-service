@@ -7,5 +7,6 @@ public enum TypeCategory {
     SAUDE,
     LAZER,
     ASSINATURAS,
+    PAGAMENTO_FATURA,
     OUTROS
 }

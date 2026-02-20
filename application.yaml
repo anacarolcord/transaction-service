@@ -2,7 +2,7 @@ spring:
 
   server:
     error:
-      include-stracktrace: never
+      include-stacktrace: never
       include-message: always
 
   cloud:

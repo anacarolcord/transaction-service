@@ -14,11 +14,12 @@ import com.anadev.transaction_service.database.collection.Transaction;
 import com.anadev.transaction_service.database.collection.enums.TypeCategory;
 import com.anadev.transaction_service.database.collection.enums.TypeTransaction;
 import com.anadev.transaction_service.database.repository.TransactionRepository;
-import com.anadev.transaction_service.messaging.rabbit.WarningLimitProducer;
+import com.anadev.transaction_service.messaging.kafka.ProducerKafkaConfig;
+import com.anadev.transaction_service.messaging.kafka.TransactionKafkaProducer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,8 +32,9 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountServiceClient accountService;
+    private final TransactionKafkaProducer transactionKafkaProducer;
 
-    public TransactionResponse createTransaction(TransactionRequest data){
+    public TransactionResponse createTransaction(TransactionRequest data) {
 
         Transaction transaction = new Transaction();
         transaction.setAccountId(data.accountId());
@@ -51,9 +53,9 @@ public class TransactionService {
 
         accountService.updateAccount(transactionRequest);
 
-
-
         transactionRepository.save(transaction);
+
+        transactionKafkaProducer.sendMessage(TransactionResponse.fromTransaction(transaction));
 
 
         return TransactionResponse.fromTransaction(transaction);
