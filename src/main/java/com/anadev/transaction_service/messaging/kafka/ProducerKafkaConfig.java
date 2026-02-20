@@ -1,4 +1,4 @@
-package com.anadev.transaction_service.config.kafka;
+package com.anadev.transaction_service.messaging.kafka;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

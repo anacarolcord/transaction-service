@@ -14,9 +14,11 @@ import com.anadev.transaction_service.database.collection.Transaction;
 import com.anadev.transaction_service.database.collection.enums.TypeCategory;
 import com.anadev.transaction_service.database.collection.enums.TypeTransaction;
 import com.anadev.transaction_service.database.repository.TransactionRepository;
+import com.anadev.transaction_service.messaging.rabbit.WarningLimitProducer;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -29,6 +31,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountServiceClient accountService;
+    private final WarningLimitProducer warningLimitProducer;
 
     public TransactionResponse createTransaction(TransactionRequest data){
 
@@ -48,8 +51,11 @@ public class TransactionService {
 
         try{
             accountService.updateAccount(transactionRequest);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        } catch (HttpClientErrorException.UnprocessableEntity e) {
+            warningLimitProducer.publish();
+            throw e;
+        }catch (Exception e){
+            throw new RuntimeException("Erro ao integrar com account-service", e.getCause());
         }
 
 
