@@ -3,8 +3,10 @@ package com.anadev.transaction_service.client;
 import com.anadev.transaction_service.client.dto.AccountUpdateDTO;
 import com.anadev.transaction_service.client.dto.TransactionRequestDTO;
 import com.anadev.transaction_service.database.DTO.TransactionResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Service
@@ -23,8 +25,11 @@ public class AccountServiceClient {
                 .uri("/accounts/{id}", data.accountId())
                 .body(body)
                 .retrieve()
+                .onStatus(status -> status.value() == 422, (request, response) -> {
+                    throw new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY, "Limite excedido ");
+                })
                 .onStatus(HttpStatusCode::isError, (request, response) -> {
-                    throw new RuntimeException("Erro ao integrar com Account Service: "+ response.getStatusCode() + response.getStatusText());
+                    throw new RuntimeException("Erro tecnico: "+ response.getStatusCode() +response.getStatusText() );
                 })
                 .toBodilessEntity();
     }
