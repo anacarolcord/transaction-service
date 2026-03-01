@@ -15,6 +15,7 @@ spring:
         warning-limit-out-0:
           destination: exchange.limit.alerts
           binder: rabbit
+          content-type: application/json
 
   application:
     name: transaction_service
